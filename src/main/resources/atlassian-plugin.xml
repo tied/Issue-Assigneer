@@ -1,24 +1,25 @@
-<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
-    <plugin-info>
-        <description>${project.description}</description>
-        <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-icon">images/pluginIcon.png</param>
-        <param name="plugin-logo">images/pluginLogo.png</param>
-    </plugin-info>
+<?xml version="1.0" encoding="UTF-8"?>
 
-    <!-- add our i18n resource -->
-    <resource type="i18n" name="i18n" location="issue-assigneer"/>
-    
-    <!-- add our web resources -->
-    <web-resource key="issue-assigneer-resources" name="issue-assigneer Web Resources">
-        <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
-        <resource type="download" name="issue-assigneer.css" location="/css/issue-assigneer.css"/>
-        <resource type="download" name="issue-assigneer.js" location="/js/issue-assigneer.js"/>
-        <resource type="download" name="images/" location="/images"/>
-
-        <context>issue-assigneer</context>
-    </web-resource>
-    
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2"> 
+  <plugin-info> 
+    <description>${project.description}</description>  
+    <version>${project.version}</version>  
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>  
+    <param name="plugin-icon">images/pluginIcon.png</param>  
+    <param name="plugin-logo">images/pluginLogo.png</param> 
+  </plugin-info>  
+  <!-- add our i18n resource -->  
+  <resource type="i18n" name="i18n" location="issue-assigneer"/>  
+  <!-- add our web resources -->  
+  <web-resource key="issue-assigneer-resources" name="issue-assigneer Web Resources"> 
+    <dependency>com.atlassian.auiplugin:ajs</dependency>  
+    <resource type="download" name="issue-assigneer.css" location="/css/issue-assigneer.css"/>  
+    <resource type="download" name="issue-assigneer.js" location="/js/issue-assigneer.js"/>  
+    <resource type="download" name="images/" location="/images"/>  
+    <context>issue-assigneer</context> 
+  </web-resource>  
+  <servlet name="Issue Assigneer" i18n-name-key="issue-assigneer.name" key="issue-assigneer" class="ru.pestov.alexey.plugins.spring.servlet.IssueAssigneer"> 
+    <description key="issue-assigneer.description">The Issue Assigneer Plugin</description>  
+    <url-pattern>/issueassigneer</url-pattern> 
+  </servlet>
 </atlassian-plugin>
