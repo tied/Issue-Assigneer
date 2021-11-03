@@ -132,9 +132,14 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.oracle</groupId>
-            <artifactId>ojdbc11</artifactId>
-            <version>21.3</version>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -284,7 +289,7 @@
     </build>
     <properties>
         <jira.version>7.5.0</jira.version>
-        <amps.version>6.3.6</amps.version>
+        <amps.version>8.0.0</amps.version>
         <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
         <atlassian.spring.scanner.version>2.1.7</atlassian.spring.scanner.version>
         <!-- This key is used to keep the consistency between the key in atlassian-plugin.xml and the key to generate bundle. -->
