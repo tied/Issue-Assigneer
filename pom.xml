@@ -132,6 +132,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <version>21.3</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.6.6</version>
@@ -148,6 +153,11 @@
             <artifactId>mockito-all</artifactId>
             <version>1.8.5</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <artifactId>maven-amps-plugin</artifactId>
+            <version>5.0.18</version>
         </dependency>
     </dependencies>
     <build>
@@ -175,12 +185,15 @@
                     <!-- See here for an explanation of default instructions: -->
                     <!-- https://developer.atlassian.com/docs/advanced-topics/configuration-of-instructions-in-atlassian-plugins -->
                     <instructions>
+                        <Bundle-ClassPath>.,{maven-dependencies},jdom-1.0-fixed.jar</Bundle-ClassPath>
+                        <Include-Resource>{maven-resources},{maven-dependencies},${project.build.directory}/jdom-1.0-fixed.jar</Include-Resource>
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
                         <!-- Add package to export here -->
                         <Export-Package>ru.pestov.alexey.plugins.spring.api,</Export-Package>
                         <!-- Add package import here -->
                         <Import-Package>org.springframework.osgi.*;resolution:="optional",
-                            org.eclipse.gemini.blueprint.*;resolution:="optional", *
+                            org.eclipse.gemini.blueprint.*;resolution:="optional",
+                            oracle*;resolution:=optional,org.jaxen*;resolution:=optional, *
                         </Import-Package>
                         <!-- Ensure plugin is spring powered -->
                         <DynamicImport-Package>*</DynamicImport-Package>
@@ -209,6 +222,63 @@
                     </scannedDependencies>
                     <verbose>false</verbose>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-jdom</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>jdom</groupId>
+                                    <artifactId>jdom</artifactId>
+                                    <version>1.0</version>
+                                    <outputDirectory>
+                                        ${project.build.directory}/jdom
+                                    </outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- Remove classes from the root package and re jar -->
+                        <id>fix-jdom</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <delete>
+                                    <fileset dir="${project.build.directory}/jdom" includes="*.class"/>
+                                </delete>
+                                <jar destfile="${project.build.directory}/jdom-1.0-fixed.jar">
+                                    <fileset dir="${project.build.directory}/jdom"/>
+                                </jar>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
