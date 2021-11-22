@@ -2,6 +2,7 @@ package ru.pestov.alexey.plugins.spring.servlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.pestov.alexey.plugins.spring.service.HTMLService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,7 @@ public class IssueAssigneer extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         resp.setContentType("text/html");
-        resp.getWriter().write("<html><body><b>Hello</b> World</body></html>");
+        resp.getWriter().write("<html><body>" + HTMLService.getHTMLCode() +"</body></html>");
     }
 
 }
